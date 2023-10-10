@@ -1,7 +1,6 @@
 const Add_btn=document.querySelector("#add-btn");
 const Todo_input=document.querySelector("#todo-input");
 const Todo_list=document.querySelector(".list");
-const list=[];
 const real_list=JSON.parse(localStorage.getItem("my_list"));
 for(let i =0 ; i<real_list.length ; i++){
     const title=real_list[i];
@@ -19,8 +18,8 @@ function clearInput(){
 
 }
 function syncStorage(item){
-    list.push(item)
-    const string_List= JSON.stringify(list);
+    real_list.push(item)
+    const string_List= JSON.stringify(real_list);
     localStorage.setItem("my_list", string_List);
 
 }
