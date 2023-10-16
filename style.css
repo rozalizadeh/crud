@@ -18,3 +18,8 @@ border-bottom: 1px solid gray;
     border-bottom: 1px solid lightgrey;
 
 }
+.list .item .delete{
+color: white;
+background-color: red;
+margin-left:  200px;
+}

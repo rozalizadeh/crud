@@ -1,7 +1,7 @@
 const Add_btn=document.querySelector("#add-btn");
 const Todo_input=document.querySelector("#todo-input");
 const Todo_list=document.querySelector(".list");
-const del_btn=document.querySelector("#delete");
+const remove_btn=document.querySelector("#remove");
 
 let list=[];
 
@@ -10,6 +10,7 @@ function validationCheck(){
 
     if(val === ""){
         alert("you can not add empty string!");
+        return;
     }else{ 
         const item={
         title: val,
@@ -30,12 +31,20 @@ function renderItem(item){
     const checkbox=document.createElement("input");
     checkbox.setAttribute("type", "checkbox");
     checkbox.checked=item.status;
+
+    const del_btn=document.createElement("button");
+    del_btn.setAttribute("type", "button");
+    del_btn.textContent="Delete";
+    del_btn.classList.add("delete");
+    del_btn.addEventListener("click",()=>{
+          Delete(item.title); })
     
     const span=document.createElement("span");
     span.textContent=item.title;
     
     div_item.appendChild(checkbox);
     div_item.appendChild(span);
+    div_item.appendChild(del_btn);
     Todo_list.appendChild(div_item);
     checkbox.addEventListener("click", ()=> {
     toggleStatus(item.title);
@@ -52,29 +61,36 @@ function clearInput(){
 
 }
 function renderList(){
+    Todo_list.innerHTML="";
+    
     for(let i =0 ; i<list.length ; i++){
         const item=list[i];
         renderItem(item);
     }
 
 }
-function remove(){
+function Delete(title){
     
     for(let i=0;i<list.length;i++){
-        if(list[i].status===true){
+        if(list[i].title===title){
          list.splice(i,1);
         }
-
-
-
-        
+       
      }
      syncStorage();
-     
-    
+     renderList();
+      
      console.log(list);
     }
- 
+ function onRemove(){
+ const newlist= list.filter((item) =>{
+   return !item.status;
+ })
+ list=newlist;
+ syncStorage();
+ renderList();
+
+ }
 
     
 
@@ -120,12 +136,8 @@ function toggleStatus(title){
 function events(){
     Add_btn.addEventListener("click", validationCheck);     
     }
-    del_btn.addEventListener("click",()=>{
-     remove();
-
-
-
-    })
+    remove_btn.addEventListener("click",()=>{
+     onRemove(); })
    
 
 
