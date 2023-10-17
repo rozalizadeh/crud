@@ -2,6 +2,10 @@ const Add_btn=document.querySelector("#add-btn");
 const Todo_input=document.querySelector("#todo-input");
 const Todo_list=document.querySelector(".list");
 const remove_btn=document.querySelector("#remove");
+const select_btn=document.querySelector(".combo");
+const select_done=document.querySelector("#done");
+const select_todo=document.querySelector("#todo");
+const select_all=document.querySelector("#all");
 
 let list=[];
 
@@ -50,11 +54,46 @@ function renderItem(item){
     toggleStatus(item.title);
         
     })
+  }
+
+
+function selectFilter(){
+
+switch(select_btn.value){
+    case "todo":
+        loadFromStorage();
+        console.log("yessss")
+        const select_todo= list.filter((item) =>{
+            return !item.status;
+          })
+          console.log(select_todo);
+          list=select_todo;
+        //   syncStorage();
+          renderList();
+        
+        break;
+    case "done":
+        console.log("doooooooooooone");
+        loadFromStorage();
+        const select_done= list.filter((item) =>{
+            return item.status;
+          })
+          console.log(select_done);
+          list=select_done;
+          
+          renderList();
+        break;
+    case "all":
+        loadFromStorage();
+        syncStorage();
+        renderList();
+        break;
+
+}
 
 
 
 
-    
 }
 function clearInput(){
     Todo_input.value=""
@@ -135,11 +174,15 @@ function toggleStatus(title){
 
 function events(){
     Add_btn.addEventListener("click", validationCheck);     
-    }
+    
     remove_btn.addEventListener("click",()=>{
      onRemove(); })
-   
-
+    
+         select_btn.addEventListener("change", () => {
+            selectFilter();
+          
+         })
+        }
 
 function init(){
     loadFromStorage();
@@ -147,4 +190,6 @@ function init(){
     events();
     console.log(list);
 }
+console.log(list);
+// syncStorage();
 init();
