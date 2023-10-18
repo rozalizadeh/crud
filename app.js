@@ -6,6 +6,8 @@ const select_btn=document.querySelector(".combo");
 const select_done=document.querySelector("#done");
 const select_todo=document.querySelector("#todo");
 const select_all=document.querySelector("#all");
+const search_btn=document.querySelector("#search");
+const inp_search=document.querySelector("#inp-search");
 
 let list=[];
 
@@ -58,41 +60,29 @@ function renderItem(item){
 
 
 function selectFilter(){
-
 switch(select_btn.value){
     case "todo":
         loadFromStorage();
-        console.log("yessss")
         const select_todo= list.filter((item) =>{
             return !item.status;
           })
-          console.log(select_todo);
           list=select_todo;
-        //   syncStorage();
           renderList();
-        
         break;
     case "done":
-        console.log("doooooooooooone");
         loadFromStorage();
         const select_done= list.filter((item) =>{
             return item.status;
           })
-          console.log(select_done);
           list=select_done;
-          
           renderList();
         break;
     case "all":
         loadFromStorage();
-        syncStorage();
         renderList();
         break;
 
 }
-
-
-
 
 }
 function clearInput(){
@@ -130,8 +120,30 @@ function Delete(title){
  renderList();
 
  }
+// search
+    function search(){
+        
+        loadFromStorage();
+        const templist=[];
+        list.forEach((title,i)=>{
+            let temp=list[i].title;
+            if(temp.includes(inp_search.value)){
+                templist.push(list[i]);
+                      }
+                });
+       if(templist.length===0){
+        alert("the string you are looking for is not founded!!!")
+        renderList();
+        inp_search.value="";
+       } 
+       else{
+       
+    list=templist;
+    console.log("list:",list);
+    renderList();
+    inp_search.value="";
 
-    
+    }}
 
 //work with storage
 function syncStorage(){
@@ -182,6 +194,15 @@ function events(){
             selectFilter();
           
          })
+         select_btn.addEventListener("click", () => {
+            selectFilter();
+          
+         })
+
+    search_btn.addEventListener("click" ,()=>{
+        search();
+
+    })     
         }
 
 function init(){
